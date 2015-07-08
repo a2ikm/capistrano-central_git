@@ -2,6 +2,7 @@ require "capistrano/central_git/version"
 
 module Capistrano
   module CentralGit
-    # Your code goes here...
   end
 end
+
+load File.expand_path("../tasks/central_git.rake", __FILE__)

@@ -1,9 +1,5 @@
 # Capistrano::CentralGit
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/capistrano/central_git`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,15 +18,54 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In Capfile:
 
-## Development
+```ruby
+require "capistrano/setup"
+require "capistrano/deploy"
+require "capistrano/central_git"
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake false` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+In config/deploy.rb:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+set :deploy_to, "/var/www/my-app"
+set :repo_url, "git@github.com:you/my-app.git"
+
+set :scm, :central_git
+set :central_host, "your-build-server"
+set :central_path, "/home/you/central_git"
+```
+
+And make sure that:
+
+- Your central_host can access to release servers via ssh.
+- Your central_host includes rsync.
+
+## Configurations
+
+| Name | Default | Description |
+|---|---|---|
+| repo_url | | |
+| repo_tree | `nil` | |
+| branch | master | |
+| ssh_options | {} | |
+| keep_releases | 5 | |
+| scm | `nil` | | Must be `central_git` |
+| central_host | `nil` | |
+| central_host_ssh_options | {} | |
+| central_path | /var/www/#{application} | |
+| central_repo_path | #{central_path}/repo | |
+| central_packages_path | #{central_path}/packages |
+| deploy_to | /var/www/#{application} | |
+| release_packages_path | #{deploy_to}/packages | |
+| excludes | [] | |
+| rsync_options | -al | |
+| rsync_rsh | /usr/bin/ssh | |
+| max_parallels | number of hosts | |
+| keep_packages | 5 | |
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/capistrano-central_git.
+Bug reports and pull requests are welcome on GitHub at https://github.com/a2ikm/capistrano-central_git.
 
