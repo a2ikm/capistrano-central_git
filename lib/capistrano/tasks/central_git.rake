@@ -121,6 +121,35 @@ namespace :central_git do
       end
     end
   end
+
+  desc "Show configurations"
+  task :config do
+    config = central_git_scm.config
+    hosts = ::Capistrano::Configuration.env.filter(release_roles(:all))
+
+    pairs = {
+      repo_url: fetch(:repo_url),
+      repo_tree: fetch(:repo_tree),
+      central_host: config.central_host,
+      central_path: config.central_path,
+      central_repo_path: config.central_repo_path,
+      central_packages_path: config.central_packages_path,
+      deploy_to: fetch(:deploy_to),
+      release_packages_path: config.release_packages_path,
+      excludes: config.excludes.join(" "),
+      rsync_options: config.rsync_options,
+      rsync_rsh: config.rsync_rsh,
+      max_parallels: config.max_parallels(hosts),
+      keep_packages: config.keep_packages,
+    }
+
+    max_key_length = pairs.keys.map { |k| k.to_s.length }.max
+    col = max_key_length + 2
+    pairs.each do |key, value|
+      puts "#{key.to_s.rjust(col)}    #{value}"
+    end
+
+  end
 end
 
 end
