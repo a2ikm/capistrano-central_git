@@ -1,5 +1,7 @@
 # Capistrano::CentralGit
 
+**Note that this product is still under development. So they can be changed without notices.**
+
 ## Installation
 
 Add this line to your application's Gemfile:
