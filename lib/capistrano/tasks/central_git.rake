@@ -87,11 +87,9 @@ namespace :central_git do
   desc "Copy repo to releases"
   task create_release: :"central_git:update" do
     run_central do
-      with fetch(:git_environmental_variables) do
-        within central_repo_path do
-          central_git_scm.create_package
-          central_git_scm.deploy_package
-        end
+      within central_repo_path do
+        central_git_scm.create_package
+        central_git_scm.deploy_package
       end
     end
 
