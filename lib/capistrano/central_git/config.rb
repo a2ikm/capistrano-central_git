@@ -21,7 +21,7 @@ module Capistrano::CentralGit
     end
 
     def self.release_packages_path
-      @release_packages_path ||= Pathname.new(fetch(:release_packages_path, shared_path.join("packages")))
+      @release_packages_path ||= Pathname.new(fetch(:release_packages_path, deploy_path.join("packages")))
     end
 
     def self.release_package_path
