@@ -65,7 +65,7 @@ And make sure that:
 | rsync_options | -al | |
 | rsync_rsh | /usr/bin/ssh | |
 | max_parallels | number of hosts | |
-| keep_packages | 5 | |
+| keep_central_packages | 5 | |
 
 ## Contributing
 

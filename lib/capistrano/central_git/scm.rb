@@ -81,17 +81,17 @@ module Capistrano::CentralGit
 
     def cleanup_package
       packages = capture(:ls, '-xtr', config.central_packages_path).split
-      keep_packages = config.keep_packages
-      if packages.count >= keep_packages
-        info t(:keeping_packages, host: host.to_s, keep_packages: keep_packages, packages: packages.count)
-        older_packages = (packages - packages.last(:keep_packages))
+      keep_central_packages = config.keep_central_packages
+      if packages.count >= keep_central_packages
+        info t(:keeping_packages, host: host.to_s, keep_packages: keep_central_packages, packages: packages.count)
+        older_packages = (packages - packages.last(keep_central_packages))
         if older_packages.any?
           older_packages_str = older_packages.map do |package|
             config.central_packages_path.join(package)
           end.join(" ")
           execute :rm, '-rf', older_packages_str
         else
-          info t(:no_old_packages, host: host.to_s, keep_packages: keep_packages)
+          info t(:no_old_packages, host: host.to_s, keep_packages: keep_central_packages)
         end
       end
     end

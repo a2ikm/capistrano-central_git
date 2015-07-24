@@ -52,8 +52,8 @@ module Capistrano::CentralGit
       @max_parallels ||= fetch(:max_parallels, hosts.size).to_i
     end
 
-    def self.keep_packages
-      @keep_packages ||= fetch(:keep_packages, 5).to_i
+    def self.keep_central_packages
+      @keep_central_packages ||= fetch(:keep_central_packages, 5).to_i
     end
   end
 end

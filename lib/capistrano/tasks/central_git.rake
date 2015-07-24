@@ -138,7 +138,7 @@ namespace :central_git do
       rsync_options: config.rsync_options,
       rsync_rsh: config.rsync_rsh,
       max_parallels: config.max_parallels(hosts),
-      keep_packages: config.keep_packages,
+      keep_central_packages: config.keep_central_packages,
     }
 
     max_key_length = pairs.keys.map { |k| k.to_s.length }.max
