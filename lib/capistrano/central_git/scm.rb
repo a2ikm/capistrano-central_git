@@ -80,41 +80,33 @@ module Capistrano::CentralGit
     end
 
     def cleanup_central_packages
-      packages = capture(:ls, '-xtr', config.central_packages_path).split
-      keep_central_packages = config.keep_central_packages
-      if packages.count >= keep_central_packages
-        info t(:keeping_packages, host: host.to_s, keep_packages: keep_central_packages, packages: packages.count)
-        older_packages = (packages - packages.last(keep_central_packages))
-        if older_packages.any?
-          older_packages_str = older_packages.map do |package|
-            config.central_packages_path.join(package)
-          end.join(" ")
-          execute :rm, '-rf', older_packages_str
-        else
-          info t(:no_old_packages, host: host.to_s, keep_packages: keep_central_packages)
-        end
-      end
+      cleanup_packages(config.central_packages_path, config.keep_central_packages)
     end
 
     def cleanup_release_packages
-      packages = capture(:ls, '-xtr', config.release_packages_path).split
-      keep_release_packages = config.keep_release_packages
-      if packages.count >= keep_release_packages
-        info t(:keeping_packages, host: host.to_s, keep_packages: keep_release_packages, packages: packages.count)
-        older_packages = (packages - packages.last(keep_release_packages))
-        if older_packages.any?
-          older_packages_str = older_packages.map do |package|
-            config.release_packages_path.join(package)
-          end.join(" ")
-          execute :rm, '-rf', older_packages_str
-        else
-          info t(:no_old_packages, host: host.to_s, keep_packages: keep_release_packages)
-        end
-      end
+      cleanup_packages(config.release_packages_path, config.keep_release_packages)
     end
 
     def fetch_revision
       capture(:git, "rev-list --max-count=1 --abbrev-commit #{fetch(:branch)}").strip
+    end
+
+    private
+
+    def cleanup_packages(packages_path, keep_packages)
+      packages = capture(:ls, '-xtr', packages_path).split
+      if packages.count >= keep_packages
+        info t(:keeping_packages, host: host.to_s, keep_packages: keep_packages, packages: packages.count)
+        older_packages = (packages - packages.last(keep_packages))
+        if older_packages.any?
+          older_packages_str = older_packages.map do |package|
+            packages_path.join(package)
+          end.join(" ")
+          execute :rm, '-rf', older_packages_str
+        else
+          info t(:no_old_packages, host: host.to_s, keep_packages: keep_packages)
+        end
+      end
     end
   end
 end
