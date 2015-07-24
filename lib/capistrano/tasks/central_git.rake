@@ -112,7 +112,7 @@ namespace :central_git do
   end
 
   desc "Cleanup packages"
-  task cleanup: :"deploy:cleanup" do
+  task :cleanup do
     run_central do
       within central_packages_path do
         central_git_scm.cleanup_central_packages
@@ -124,6 +124,7 @@ namespace :central_git do
       end
     end
   end
+  after :"deploy:cleanup", :cleanup
 
   desc "Show configurations"
   task :config do
