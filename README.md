@@ -66,6 +66,7 @@ And make sure that:
 | rsync_rsh | /usr/bin/ssh | |
 | max_parallels | number of hosts | |
 | keep_central_packages | 5 | |
+| keep_release_packages | 5 | |
 
 ## Contributing
 

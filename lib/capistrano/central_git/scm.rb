@@ -79,7 +79,7 @@ module Capistrano::CentralGit
       execute :tar, "zxf", config.release_package_path, "-C", release_path
     end
 
-    def cleanup_package
+    def cleanup_central_packages
       packages = capture(:ls, '-xtr', config.central_packages_path).split
       keep_central_packages = config.keep_central_packages
       if packages.count >= keep_central_packages
@@ -92,6 +92,23 @@ module Capistrano::CentralGit
           execute :rm, '-rf', older_packages_str
         else
           info t(:no_old_packages, host: host.to_s, keep_packages: keep_central_packages)
+        end
+      end
+    end
+
+    def cleanup_release_packages
+      packages = capture(:ls, '-xtr', config.release_packages_path).split
+      keep_release_packages = config.keep_release_packages
+      if packages.count >= keep_release_packages
+        info t(:keeping_packages, host: host.to_s, keep_packages: keep_release_packages, packages: packages.count)
+        older_packages = (packages - packages.last(keep_release_packages))
+        if older_packages.any?
+          older_packages_str = older_packages.map do |package|
+            config.release_packages_path.join(package)
+          end.join(" ")
+          execute :rm, '-rf', older_packages_str
+        else
+          info t(:no_old_packages, host: host.to_s, keep_packages: keep_release_packages)
         end
       end
     end

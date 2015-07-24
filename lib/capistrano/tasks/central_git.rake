@@ -115,7 +115,12 @@ namespace :central_git do
   task cleanup: :"deploy:cleanup" do
     run_central do
       within central_packages_path do
-        central_git_scm.cleanup_packages
+        central_git_scm.cleanup_central_packages
+      end
+    end
+    on release_roles :all do |host|
+      within release_packages_path do
+        central_git_scm.cleanup_release_packages
       end
     end
   end

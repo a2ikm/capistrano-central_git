@@ -55,5 +55,9 @@ module Capistrano::CentralGit
     def self.keep_central_packages
       @keep_central_packages ||= fetch(:keep_central_packages, 5).to_i
     end
+
+    def self.keep_release_packages
+      @keep_release_packages ||= fetch(:keep_release_packages, 5).to_i
+    end
   end
 end
